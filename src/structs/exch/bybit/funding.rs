@@ -18,5 +18,5 @@ pub struct RESULT_FUNDUNG_HISTORY1
 pub struct RESULT_FUNDING_HISTORY
 {
     pub category: String,
-    pub list: Vec<RESULT_SYMBOLS1>
+    pub list: Vec<RESULT_FUNDUNG_HISTORY1>
 }

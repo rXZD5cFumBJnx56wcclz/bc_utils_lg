@@ -20,6 +20,7 @@ pub struct SETTINGS_IND {
     pub kwargs_string: MAP<String, String>,
     pub used_src: Vec<SETTINGS_USED_SRC>,
     pub used_ind: Vec<String>,
+    pub order_used: Vec<usize>,
 }
 pub type SETTINGS_INDS = MAP_LINK<String, SETTINGS_IND>;
 

@@ -4,14 +4,14 @@ use serde::{Deserialize, Serialize};
 
 use crate::types::maps::{MAP, MAP_LINK};
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(default)]
 pub struct SETTINGS_USED_SRC {
     pub index: usize,
     pub sub_from_last_i: usize,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(default)]
 pub struct SETTINGS_IND {
     pub key: String,
@@ -24,7 +24,7 @@ pub struct SETTINGS_IND {
 }
 pub type SETTINGS_INDS = MAP_LINK<String, SETTINGS_IND>;
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(default)]
 pub struct SETTINGS_EXCH {
     pub url: String,
@@ -32,14 +32,14 @@ pub struct SETTINGS_EXCH {
     pub secret: String,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(default)]
 pub struct SETTINGS_MSG {
     pub key: String,
     pub chat: String,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(default)]
 pub struct SETTINGS {
     pub exch: SETTINGS_EXCH,

@@ -31,7 +31,7 @@ pub struct SETTINGS_IND {
     pub kwargs_string: MAP<String, String>,
     pub used_src: Vec<SETTINGS_USED_SRC>,
     pub used_ind: Vec<String>,
-    pub order_used: Vec<usize>,
+    pub procedure_used: Vec<usize>,
 }
 pub type SETTINGS_INDS = MAP_LINK<String, SETTINGS_IND>;
 
@@ -45,8 +45,8 @@ pub struct SETTINGS_SIGNAL {
     pub used_src: Vec<SETTINGS_USED_SRC>,
     pub used_ind: Vec<String>,
     pub used_signals: Vec<String>,
-    pub order_used_src: Vec<usize>,
-    pub order_used_signals: Vec<usize>,
+    pub procedure_used_src: Vec<usize>,
+    pub procedure_used_signals: Vec<usize>,
 }
 pub type SETTINGS_SIGNALS = MAP_LINK<String, SETTINGS_SIGNAL>;
 
@@ -84,6 +84,16 @@ pub struct SETTINGS_ORDER_COLLECTOR {
     // (1: key, 2: key_ind)
     pub used_signals_ready: Vec<(String, String)>,
 }
+pub type SETTINGS_ORDER_COLLECTORS = Vec<SETTINGS_ORDER_COLLECTOR>;
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone)]
+#[serde(default)]
+pub struct SETTINGS_GW_FUNC {
+    pub key: String,
+    pub kwargs_usize: MAP<String, usize>,
+    pub kwargs_f64: MAP<String, f64>,
+    pub kwargs_string: MAP<String, String>,
+}
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(default)]
@@ -104,11 +114,11 @@ pub struct SETTINGS_TRADE {
     pub market_exit_orders_signals: Vec<String>,
     pub limit_entry_orders_signals: Vec<(String, String)>,
     pub limit_exit_orders_signals: Vec<(String, String)>,
-    pub trigger_market_entry_orders_signals: Vec<(String, String,)>,
-    pub trigger_market_exit_orders_signals: Vec<(String, String,)>,
+    pub trigger_market_entry_orders_signals: Vec<(String, String)>,
+    pub trigger_market_exit_orders_signals: Vec<(String, String)>,
     pub trigger_limit_entry_orders_signals: Vec<(String, String, String)>,
     pub trigger_limit_exit_orders_signals: Vec<(String, String, String)>,
-    pub order_collectors: Vec<SETTINGS_ORDER_COLLECTOR>,
+    pub order_collectors: SETTINGS_ORDER_COLLECTORS,
     pub stoploss: Vec<(f64, f64, f64)>,
     pub takeprofit: Vec<(f64, f64, f64)>,
     pub trigger_by: String,
@@ -120,6 +130,8 @@ pub struct SETTINGS_TRADE {
     pub leverage: f64,
     pub mode_trade: String,
     pub hedge_mode: bool,
+    pub symbols_filter: Option<SETTINGS_GW_FUNC>,
+    pub symbols_time_update_ms: usize,
     pub symbols: Vec<String>,
     pub symbols_black_list: Vec<String>,
     pub coins: Vec<String>,
@@ -167,6 +179,8 @@ impl Default for SETTINGS_TRADE {
             leverage: 1.0,
             mode_trade: "isolated".to_string(),
             hedge_mode: true,
+            symbols_filter: None,
+            symbols_time_update_ms: 60 * 60 * 24 * 1000,
             symbols: Default::default(),
             symbols_black_list: Default::default(),
             coins: Default::default(),
@@ -195,7 +209,7 @@ impl Default for SETTINGS_FILES_PATH {
             script_stat: Default::default(),
             // /23_00_24_24_06_2026/report.html
             // /23_00_24_24_06_2026/SUIUSDT/data.dat
-            // /23_00_24_24_06_2026/SUIUSDT/stat_value.dat
+            // /23_00_24_24_06_2026/SUIUSDT/stat_values.dat
             // /23_00_24_24_06_2026/SUIUSDT/stat_columns.dat
             // /23_00_24_24_06_2026/SUIUSDT/script_data.plt
             // /23_00_24_24_06_2026/SUIUSDT/script_stat.plt
@@ -203,7 +217,7 @@ impl Default for SETTINGS_FILES_PATH {
             // /23_00_24_24_06_2026/SUIUSDT/capital.svg
             // /23_00_24_24_06_2026/SUIUSDT/stat.svg
             backtest: "target/bc_constructor/backtests".into(),
-            src_data: Default::default(),
+            src_data: "target/bc_constructor/data".into(),
             train_model: "target/bc_constructor/train_models".into(),
         }
     }
@@ -225,6 +239,6 @@ pub struct SETTINGS {
     pub signals_ready: SETTINGS_SIGNALS,
     pub trade: SETTINGS_TRADE,
     pub files_path: SETTINGS_FILES_PATH,
-    pub indications_stat_value: SETTINGS_INDS,
     pub indications_stat_values: SETTINGS_INDS,
+    pub indications_stat_columns: SETTINGS_INDS,
 }

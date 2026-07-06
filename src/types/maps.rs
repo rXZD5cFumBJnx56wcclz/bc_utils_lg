@@ -10,7 +10,7 @@ pub type MAP_LINK<K, V> = IndexMap<K, V, BuildHasherDefault<FxHasher>>;
 pub type FUNCS_EXTRACT_ARGS_TYPE<S, T> = MAP<&'static str, fn(&S) -> T>;
 
 pub trait MapTrait<'a, K, V>
-where 
+where
     K: 'a,
     V: 'a,
 {
@@ -19,7 +19,7 @@ where
 }
 
 impl<'a, K, V> MapTrait<'a, K, V> for MAP<K, V>
-where 
+where
     K: 'a,
     V: 'a,
 {
@@ -31,7 +31,7 @@ where
     }
 }
 impl<'a, K, V> MapTrait<'a, K, V> for MAP_LINK<K, V>
-where 
+where
     K: 'a,
     V: 'a,
 {

@@ -194,15 +194,15 @@ impl Default for SETTINGS_TRADE {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(default)]
-pub struct SETTINGS_FILES_PATH {
+pub struct SETTINGS_FILES_DIR {
     pub script_backtest: PathBuf,
     pub script_stat: PathBuf,
     pub backtest: PathBuf,
-    pub src_data: PathBuf,
+    pub src: PathBuf,
     pub train_model: PathBuf,
 }
 
-impl Default for SETTINGS_FILES_PATH {
+impl Default for SETTINGS_FILES_DIR {
     fn default() -> Self {
         Self {
             script_backtest: Default::default(),
@@ -217,7 +217,7 @@ impl Default for SETTINGS_FILES_PATH {
             // /23_00_24_24_06_2026/SUIUSDT/capital.svg
             // /23_00_24_24_06_2026/SUIUSDT/stat.svg
             backtest: "target/bc_constructor/backtests".into(),
-            src_data: "target/bc_constructor/data".into(),
+            src: "target/bc_constructor/data".into(),
             train_model: "target/bc_constructor/train_models".into(),
         }
     }
@@ -238,7 +238,7 @@ pub struct SETTINGS {
     pub signals_train: SETTINGS_SIGNALS,
     pub signals_ready: SETTINGS_SIGNALS,
     pub trade: SETTINGS_TRADE,
-    pub files_path: SETTINGS_FILES_PATH,
+    pub files_dir: SETTINGS_FILES_DIR,
     pub indications_stat_values: SETTINGS_INDS,
     pub indications_stat_columns: SETTINGS_INDS,
 }

@@ -16,6 +16,7 @@ where
 {
     fn keys(&'a self) -> impl IntoIterator<Item = &'a K>;
     fn values(&'a self) -> impl IntoIterator<Item = &'a V>;
+    fn is_empty(&'a self) -> bool;
 }
 
 impl<'a, K, V> MapTrait<'a, K, V> for MAP<K, V>
@@ -29,6 +30,9 @@ where
     fn values(&'a self) -> impl IntoIterator<Item = &'a V> {
         self.values()
     }
+    fn is_empty(&'a self) -> bool {
+        self.is_empty()
+    }
 }
 impl<'a, K, V> MapTrait<'a, K, V> for MAP_LINK<K, V>
 where
@@ -40,5 +44,8 @@ where
     }
     fn values(&'a self) -> impl IntoIterator<Item = &'a V> {
         self.values()
+    }
+    fn is_empty(&'a self) -> bool {
+        self.is_empty()
     }
 }

@@ -73,10 +73,16 @@ impl Order {
     pub fn is_trigger(&self) -> bool {
         !self.trigger_price.is_none()
     }
-    pub fn set_is_active(&mut self, is_active: bool) {
+    pub fn set_is_active(
+        &mut self,
+        is_active: bool,
+    ) {
         self.is_active = is_active;
     }
-    pub fn get_order_qty(&self, position_qty: f64) -> f64 {
+    pub fn get_order_qty(
+        &self,
+        position_qty: f64,
+    ) -> f64 {
         self.qty_percent_of_position * position_qty + self.qty
     }
 }
@@ -112,13 +118,22 @@ impl Position {
             is_active,
         }
     }
-    pub fn set_qty(&mut self, qty: f64) {
+    pub fn set_qty(
+        &mut self,
+        qty: f64,
+    ) {
         self.qty = qty;
     }
-    pub fn set_avg_open_price(&mut self, avg_open_price: f64) {
+    pub fn set_avg_open_price(
+        &mut self,
+        avg_open_price: f64,
+    ) {
         self.avg_open_price = avg_open_price;
     }
-    pub fn set_is_active(&mut self, is_active: bool) {
+    pub fn set_is_active(
+        &mut self,
+        is_active: bool,
+    ) {
         self.is_active = is_active;
     }
 }
@@ -138,7 +153,11 @@ pub struct TradeCell {
 }
 
 impl TradeCell {
-    pub fn new(capital: f64, src: Vec<f64>, src_l: Vec<f64>) -> Self {
+    pub fn new(
+        capital: f64,
+        src: Vec<f64>,
+        src_l: Vec<f64>,
+    ) -> Self {
         Self {
             capital: capital,
             src: src,
@@ -146,37 +165,58 @@ impl TradeCell {
             ..Self::default()
         }
     }
-    pub fn push_position(&mut self, position: Position) {
+    pub fn push_position(
+        &mut self,
+        position: Position,
+    ) {
         self.positions
             .borrow_mut()
             .insert(position.position_idx.clone(), position);
     }
-    pub fn push_trigger_order(&mut self, order: Order) {
+    pub fn push_trigger_order(
+        &mut self,
+        order: Order,
+    ) {
         self.trigger_orders
             .borrow_mut()
             .insert(order.order_link_id.clone(), order);
     }
-    pub fn push_limit_order(&mut self, order: Order) {
+    pub fn push_limit_order(
+        &mut self,
+        order: Order,
+    ) {
         self.limit_orders
             .borrow_mut()
             .insert(order.order_link_id.clone(), order);
     }
-    pub fn push_market_order(&mut self, order: Order) {
+    pub fn push_market_order(
+        &mut self,
+        order: Order,
+    ) {
         self.market_orders
             .borrow_mut()
             .insert(order.order_link_id.clone(), order);
     }
-    pub fn push_triggers_orders<T: IntoIterator<Item = Order>>(&mut self, orders: T) {
+    pub fn push_triggers_orders<T: IntoIterator<Item = Order>>(
+        &mut self,
+        orders: T,
+    ) {
         for order in orders {
             self.push_trigger_order(order);
         }
     }
-    pub fn push_limits_orders<T: IntoIterator<Item = Order>>(&mut self, orders: T) {
+    pub fn push_limits_orders<T: IntoIterator<Item = Order>>(
+        &mut self,
+        orders: T,
+    ) {
         for order in orders {
             self.push_limit_order(order);
         }
     }
-    pub fn push_market_orders<T: IntoIterator<Item = Order>>(&mut self, orders: T) {
+    pub fn push_market_orders<T: IntoIterator<Item = Order>>(
+        &mut self,
+        orders: T,
+    ) {
         for order in orders {
             self.push_market_order(order);
         }

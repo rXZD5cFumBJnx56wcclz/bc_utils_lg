@@ -15,14 +15,14 @@ pub fn settings_from_json(dir: PathBuf) -> Result<SETTINGS, Box<dyn Error>> {
     from_reader(&mut reader).map_err(|e| Box::new(e) as Box<dyn Error>)
 }
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_USED_SRC {
     pub index: usize,
     pub sub_from_last_i: usize,
 }
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_IND {
     pub key: String,
@@ -35,7 +35,7 @@ pub struct SETTINGS_IND {
 }
 pub type SETTINGS_INDS = MAP_LINK<String, SETTINGS_IND>;
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_SIGNAL {
     pub key: String,
@@ -50,7 +50,7 @@ pub struct SETTINGS_SIGNAL {
 }
 pub type SETTINGS_SIGNALS = MAP_LINK<String, SETTINGS_SIGNAL>;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_EXCH {
     pub url: String,
@@ -74,7 +74,7 @@ impl Default for SETTINGS_EXCH {
     }
 }
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_ORDER_COLLECTOR {
     pub key: String,
@@ -86,7 +86,7 @@ pub struct SETTINGS_ORDER_COLLECTOR {
 }
 pub type SETTINGS_ORDER_COLLECTORS = Vec<SETTINGS_ORDER_COLLECTOR>;
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_GW_FUNC {
     pub key: String,
@@ -95,7 +95,36 @@ pub struct SETTINGS_GW_FUNC {
     pub kwargs_string: MAP<String, String>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+// fix
+// configuration for creating SL/TP orders if the position has not been created
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+pub struct SETTINGS_CREATE_TP_SL_ORDERS {
+    pub tp_market: bool,
+    pub tp_limit: bool,
+    pub tp_trigger_market: bool,
+    pub tp_trigger_limit: bool,
+    pub sl_market: bool,
+    pub sl_limit: bool,
+    pub sl_trigger_market: bool,
+    pub sl_trigger_limit: bool,
+}
+
+impl Default for SETTINGS_CREATE_TP_SL_ORDERS {
+    fn default() -> Self {
+        Self {
+            tp_market: true,
+            tp_limit: false,
+            tp_trigger_market: false,
+            tp_trigger_limit: false,
+            sl_market: true,
+            sl_limit: false,
+            sl_trigger_market: false,
+            sl_trigger_limit: false,
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_TRADE {
     pub signal_hold: f64,
@@ -118,6 +147,7 @@ pub struct SETTINGS_TRADE {
     pub trigger_market_exit_orders_signals: Vec<(String, String)>,
     pub trigger_limit_entry_orders_signals: Vec<(String, String, String)>,
     pub trigger_limit_exit_orders_signals: Vec<(String, String, String)>,
+    pub create_tp_sl_orders: SETTINGS_CREATE_TP_SL_ORDERS,
     pub order_collectors: SETTINGS_ORDER_COLLECTORS,
     pub stoploss: Vec<(f64, f64, f64)>,
     pub takeprofit: Vec<(f64, f64, f64)>,
@@ -164,6 +194,7 @@ impl Default for SETTINGS_TRADE {
             trigger_market_exit_orders_signals: Default::default(),
             trigger_limit_entry_orders_signals: Default::default(),
             trigger_limit_exit_orders_signals: Default::default(),
+            create_tp_sl_orders: Default::default(),
             order_collectors: vec![SETTINGS_ORDER_COLLECTOR {
                 key: "clear".to_string(),
                 ..Default::default()
@@ -192,7 +223,7 @@ impl Default for SETTINGS_TRADE {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_FILES_DIR {
     pub script_backtest: PathBuf,
@@ -223,14 +254,14 @@ impl Default for SETTINGS_FILES_DIR {
     }
 }
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_MSG {
     pub key: String,
     pub chat: String,
 }
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS {
     pub exch: SETTINGS_EXCH,

@@ -202,20 +202,10 @@ pub static SRC_TRANSPOSE: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
 pub static SRC: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
     (0..50)
         .map(|i| {
-            [
-                TIME,
-                OPEN,
-                HIGH,
-                LOW,
-                CLOSE,
-                VOLUME,
-                TURNOVER,
-                MARK_PRICE,
-                INDEX_PRICE,
-            ]
-            .into_iter()
-            .map(|v| v[i])
-            .collect()
+            [TIME, OPEN, HIGH, LOW, CLOSE, VOLUME, TURNOVER, MARK_PRICE, INDEX_PRICE]
+                .into_iter()
+                .map(|v| v[i])
+                .collect()
         })
         .collect()
 });

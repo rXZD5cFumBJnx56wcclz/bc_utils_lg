@@ -16,6 +16,7 @@ where
 {
     fn keys(&'a self) -> impl IntoIterator<Item = &'a K>;
     fn values(&'a self) -> impl IntoIterator<Item = &'a V>;
+    fn len(&'a self) -> usize;
     fn is_empty(&'a self) -> bool;
 }
 
@@ -29,6 +30,9 @@ where
     }
     fn values(&'a self) -> impl IntoIterator<Item = &'a V> {
         self.values()
+    }
+    fn len(&'a self) -> usize {
+        self.len()
     }
     fn is_empty(&'a self) -> bool {
         self.is_empty()
@@ -44,6 +48,9 @@ where
     }
     fn values(&'a self) -> impl IntoIterator<Item = &'a V> {
         self.values()
+    }
+    fn len(&'a self) -> usize {
+        self.len()
     }
     fn is_empty(&'a self) -> bool {
         self.is_empty()

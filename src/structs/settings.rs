@@ -17,8 +17,15 @@ pub fn settings_from_json(dir: PathBuf) -> Result<SETTINGS, Box<dyn Error>> {
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_USED_SRC {
+pub struct SETTINGS_USED_STRING_USIZE {
     pub index: usize,
+    pub sub_from_last_i: usize,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_USED_STRING {
+    pub key: String,
     pub sub_from_last_i: usize,
 }
 
@@ -29,7 +36,7 @@ pub struct SETTINGS_IND {
     pub kwargs_usize: MAP<String, usize>,
     pub kwargs_f64: MAP<String, f64>,
     pub kwargs_string: MAP<String, String>,
-    pub used_src: Vec<SETTINGS_USED_SRC>,
+    pub used_src: Vec<SETTINGS_USED_STRING_USIZE>,
     pub used_ind: Vec<String>,
     pub procedure_used: Vec<usize>,
 }
@@ -42,7 +49,7 @@ pub struct SETTINGS_SIGNAL {
     pub kwargs_usize: MAP<String, usize>,
     pub kwargs_f64: MAP<String, f64>,
     pub kwargs_string: MAP<String, String>,
-    pub used_src: Vec<SETTINGS_USED_SRC>,
+    pub used_src: Vec<SETTINGS_USED_STRING_USIZE>,
     pub used_ind: Vec<String>,
     pub used_signals: Vec<String>,
     pub procedure_used_src: Vec<usize>,
@@ -88,12 +95,18 @@ pub type SETTINGS_ORDER_COLLECTORS = Vec<SETTINGS_ORDER_COLLECTOR>;
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_GW_FUNC {
+pub struct SETTINGS_SYMBOL_FILTER {
     pub key: String,
     pub kwargs_usize: MAP<String, usize>,
     pub kwargs_f64: MAP<String, f64>,
     pub kwargs_string: MAP<String, String>,
+    pub used_src: Vec<SETTINGS_USED_STRING_USIZE>,
+    pub used_ind: Vec<SETTINGS_USED_STRING>,
+    pub used_ind_stat_columns: Vec<SETTINGS_USED_STRING>,
+    pub used_ind_stat_values: Vec<String>,
+    pub procedure_used_src: Vec<usize>,
 }
+pub type SETTINGS_SYMBOL_FILTERS = Vec<SETTINGS_SYMBOL_FILTER>;
 
 // fix
 // configuration for creating SL/TP orders if the position has not been created
@@ -113,10 +126,10 @@ impl Default for SETTINGS_CREATE_TP_SL_ORDERS {
     fn default() -> Self {
         Self {
             tp_market: true,
+            sl_market: true,
             tp_limit: false,
             tp_trigger_market: false,
             tp_trigger_limit: false,
-            sl_market: true,
             sl_limit: false,
             sl_trigger_market: false,
             sl_trigger_limit: false,
@@ -160,7 +173,7 @@ pub struct SETTINGS_TRADE {
     pub leverage: f64,
     pub mode_trade: String,
     pub hedge_mode: bool,
-    pub symbols_filter: Option<SETTINGS_GW_FUNC>,
+    pub symbols_filters: Option<SETTINGS_SYMBOL_FILTERS>,
     pub symbols_time_update_ms: usize,
     pub symbols: Vec<String>,
     pub symbols_black_list: Vec<String>,
@@ -210,7 +223,7 @@ impl Default for SETTINGS_TRADE {
             leverage: 1.0,
             mode_trade: "isolated".to_string(),
             hedge_mode: true,
-            symbols_filter: None,
+            symbols_filters: None,
             symbols_time_update_ms: 60 * 60 * 24 * 1000,
             symbols: Default::default(),
             symbols_black_list: Default::default(),

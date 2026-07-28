@@ -15,48 +15,6 @@ pub fn settings_from_json(dir: PathBuf) -> Result<SETTINGS, Box<dyn Error>> {
     from_reader(&mut reader).map_err(|e| Box::new(e) as Box<dyn Error>)
 }
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
-#[serde(default)]
-pub struct SETTINGS_USED_STRING_USIZE {
-    pub index: usize,
-    pub sub_from_last_i: usize,
-}
-
-#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
-#[serde(default)]
-pub struct SETTINGS_USED_STRING {
-    pub key: String,
-    pub sub_from_last_i: usize,
-}
-
-#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
-#[serde(default)]
-pub struct SETTINGS_IND {
-    pub key: String,
-    pub kwargs_usize: MAP<String, usize>,
-    pub kwargs_f64: MAP<String, f64>,
-    pub kwargs_string: MAP<String, String>,
-    pub used_src: Vec<SETTINGS_USED_STRING_USIZE>,
-    pub used_ind: Vec<String>,
-    pub procedure_used: Vec<usize>,
-}
-pub type SETTINGS_INDS = MAP_LINK<String, SETTINGS_IND>;
-
-#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
-#[serde(default)]
-pub struct SETTINGS_SIGNAL {
-    pub key: String,
-    pub kwargs_usize: MAP<String, usize>,
-    pub kwargs_f64: MAP<String, f64>,
-    pub kwargs_string: MAP<String, String>,
-    pub used_src: Vec<SETTINGS_USED_STRING_USIZE>,
-    pub used_ind: Vec<String>,
-    pub used_signals: Vec<String>,
-    pub procedure_used_src: Vec<usize>,
-    pub procedure_used_signals: Vec<usize>,
-}
-pub type SETTINGS_SIGNALS = MAP_LINK<String, SETTINGS_SIGNAL>;
-
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_EXCH {
@@ -81,17 +39,48 @@ impl Default for SETTINGS_EXCH {
     }
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[serde(default, transparent)]
+pub struct SETTINGS_FILES_DIR(pub PathBuf);
+
+impl Default for SETTINGS_FILES_DIR {
+    fn default() -> Self {
+        Self("target/bc_constructor".into())
+    }
+}
+
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_ORDER_COLLECTOR {
+pub struct SETTINGS_USED_USIZE {
+    pub index: usize,
+    pub sub_from_last_i: usize,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_USED_STRING {
+    pub key: String,
+    pub sub_from_last_i: usize,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_GW {
     pub key: String,
     pub kwargs_usize: MAP<String, usize>,
     pub kwargs_f64: MAP<String, f64>,
     pub kwargs_string: MAP<String, String>,
-    // (1: key, 2: key_ind)
-    pub used_signals_ready: Vec<(String, String)>,
 }
-pub type SETTINGS_ORDER_COLLECTORS = Vec<SETTINGS_ORDER_COLLECTOR>;
+
+pub type SETTINGS_GW_MAP = MAP<String, SETTINGS_GW>;
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_SYMBOL_FILTERS_PRE_GEN {
+    pub symbols_black_list: Vec<String>,
+    pub coins: Vec<String>,
+    pub coins_black_list: Vec<String>,
+}
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
@@ -100,71 +89,240 @@ pub struct SETTINGS_SYMBOL_FILTER {
     pub kwargs_usize: MAP<String, usize>,
     pub kwargs_f64: MAP<String, f64>,
     pub kwargs_string: MAP<String, String>,
-    pub used_src: Vec<SETTINGS_USED_STRING_USIZE>,
+    pub used_src: Vec<SETTINGS_USED_USIZE>,
     pub used_ind: Vec<SETTINGS_USED_STRING>,
     pub used_ind_stat_columns: Vec<SETTINGS_USED_STRING>,
     pub used_ind_stat_values: Vec<String>,
     pub procedure_used_src: Vec<usize>,
 }
-pub type SETTINGS_SYMBOL_FILTERS = Vec<SETTINGS_SYMBOL_FILTER>;
+pub type SETTINGS_SYMBOL_FILTERS_POST_GEN = Vec<SETTINGS_SYMBOL_FILTER>;
 
-// fix
-// configuration for creating SL/TP orders if the position has not been created
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
-pub struct SETTINGS_CREATE_TP_SL_ORDERS {
-    pub tp_market: bool,
-    pub tp_limit: bool,
-    pub tp_trigger_market: bool,
-    pub tp_trigger_limit: bool,
-    pub sl_market: bool,
-    pub sl_limit: bool,
-    pub sl_trigger_market: bool,
-    pub sl_trigger_limit: bool,
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_IND {
+    pub key: String,
+    pub kwargs_usize: MAP<String, usize>,
+    pub kwargs_f64: MAP<String, f64>,
+    pub kwargs_string: MAP<String, String>,
+    pub used_src: Vec<SETTINGS_USED_USIZE>,
+    pub used_ind: Vec<String>,
+    pub procedure_used: Vec<usize>,
+}
+pub type SETTINGS_INDS = MAP_LINK<String, SETTINGS_IND>;
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_SIGNAL {
+    pub key: String,
+    pub kwargs_usize: MAP<String, usize>,
+    pub kwargs_f64: MAP<String, f64>,
+    pub kwargs_string: MAP<String, String>,
+    pub used_src: Vec<SETTINGS_USED_USIZE>,
+    pub used_ind: Vec<String>,
+    pub used_signals_train: Vec<String>,
+    pub procedure_used_src: Vec<usize>,
+    pub used_signals: Vec<String>,
+}
+pub type SETTINGS_SIGNALS = MAP_LINK<String, SETTINGS_SIGNAL>;
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_TRIGGER_OUT_OF_STORAGE {
+    pub used_ind: String,
+    pub trigger_by: String,
+    pub used_util_state: String,
 }
 
-impl Default for SETTINGS_CREATE_TP_SL_ORDERS {
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_STATE_VALUES {
+    pub qty_percent_of_position: Option<f64>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_ORDER_CREATOR {
+    pub type_: String,
+    // side
+    pub used_signal: String,
+    // qty
+    pub used_util_state: String,
+    pub is_reduce: bool,
+    // price
+    pub used_ind: Option<String>,
+    // values ​​that are tied to state
+    pub state_values: Option<SETTINGS_STATE_VALUES>,
+    // if order is trigger
+    pub include_in_storage: bool,
+    // if order is trigger
+    pub trigger: Option<SETTINGS_TRIGGER_OUT_OF_STORAGE>,
+    pub commission: f64,
+    pub type_price_cross: String,
+    pub signal_short: f64,
+    pub signal_long: f64,
+    pub leverage: f64,
+}
+
+impl Default for SETTINGS_ORDER_CREATOR {
     fn default() -> Self {
         Self {
-            tp_market: true,
-            sl_market: true,
-            tp_limit: false,
-            tp_trigger_market: false,
-            tp_trigger_limit: false,
-            sl_limit: false,
-            sl_trigger_market: false,
-            sl_trigger_limit: false,
+            type_: Default::default(),
+            used_signal: Default::default(),
+            used_util_state: Default::default(),
+            is_reduce: Default::default(),
+            used_ind: Default::default(),
+            state_values: Default::default(),
+            include_in_storage: Default::default(),
+            trigger: Default::default(),
+            commission: 0.001,
+            type_price_cross: "last".to_string(),
+            signal_short: -1.,
+            signal_long: 1.,
+            leverage: 1.,
         }
+    }
+}
+
+pub type SETTINGS_ORDER_CREATORS = MAP<String, SETTINGS_ORDER_CREATOR>;
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_ORDER_FILTER {
+    pub key: String,
+    pub kwargs_usize: MAP<String, usize>,
+    pub kwargs_f64: MAP<String, f64>,
+    pub kwargs_string: MAP<String, String>,
+    pub used_orders: Vec<String>,
+    pub used_orders_filtered: Vec<String>,
+    pub procedure_used_orders: Vec<usize>,
+    pub used_src: Vec<SETTINGS_USED_USIZE>,
+    pub used_ind: Vec<String>,
+    pub used_utils_state: Vec<String>,
+    // does not apply to bf
+    pub procedure_used_src: Vec<usize>,
+    pub used_signals: Vec<String>,
+}
+
+pub type SETTINGS_ORDER_FILTERS = MAP_LINK<String, SETTINGS_ORDER_FILTER>;
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_ORDER_COLLECTOR {
+    pub key: String,
+    pub kwargs_usize: MAP<String, usize>,
+    pub kwargs_f64: MAP<String, f64>,
+    pub kwargs_string: MAP<String, String>,
+    // (1: key, 2: key_ind)
+    pub used_signals: Vec<String>,
+    pub used_ind: Vec<String>,
+}
+pub type SETTINGS_ORDER_COLLECTORS = Vec<SETTINGS_ORDER_COLLECTOR>;
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_UTIL_STATE {
+    pub key: String,
+    pub kwargs_usize: MAP<String, usize>,
+    pub kwargs_f64: MAP<String, f64>,
+    pub kwargs_string: MAP<String, String>,
+    pub used_src: Vec<SETTINGS_USED_USIZE>,
+    pub used_ind: Vec<String>,
+    pub procedure_used_src: Vec<usize>,
+    pub used_signals: Vec<String>,
+}
+
+pub type SETTINGS_UTILS_STATE = MAP<String, SETTINGS_UTIL_STATE>;
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_STAT_DATA_INDEXING_DATA {
+    pub key_map_index: String,
+    pub key_index: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_STAT_DATA {
+    pub key: String,
+    pub map_group: String,
+    pub indexing_data: Option<SETTINGS_STAT_DATA_INDEXING_DATA>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[serde(default, transparent)]
+pub struct SETTINGS_STAT_DATA_COLL(pub MAP<String, SETTINGS_STAT_DATA>);
+
+impl Default for SETTINGS_STAT_DATA_COLL {
+    fn default() -> Self {
+        Self(MAP::from_iter([
+            (
+                "capital_1".to_string(),
+                SETTINGS_STAT_DATA {
+                    key: "capital".to_string(),
+                    map_group: "default".to_string(),
+                    ..Default::default()
+                },
+            ),
+            (
+                "reduce_orders_1".to_string(),
+                SETTINGS_STAT_DATA {
+                    key: "reduce_orders".to_string(),
+                    map_group: "default".to_string(),
+                    ..Default::default()
+                },
+            ),
+            (
+                "not_reduce_orders_1".to_string(),
+                SETTINGS_STAT_DATA {
+                    key: "not_reduce_orders".to_string(),
+                    map_group: "default".to_string(),
+                    ..Default::default()
+                },
+            ),
+            (
+                "pnl_orders_1".to_string(),
+                SETTINGS_STAT_DATA {
+                    key: "pnl_orders".to_string(),
+                    map_group: "default".to_string(),
+                    ..Default::default()
+                },
+            ),
+            (
+                "qty_on_orders_1".to_string(),
+                SETTINGS_STAT_DATA {
+                    key: "qty_on_orders".to_string(),
+                    map_group: "default".to_string(),
+                    ..Default::default()
+                },
+            ),
+            (
+                "kline_1".to_string(),
+                SETTINGS_STAT_DATA {
+                    key: "index_sep_positions".to_string(),
+                    map_group: "positions".to_string(),
+                    ..Default::default()
+                },
+            ),
+            (
+                "positions_1".to_string(),
+                SETTINGS_STAT_DATA {
+                    key: "positions".to_string(),
+                    map_group: "poisitions".to_string(),
+                    indexing_data: Some(SETTINGS_STAT_DATA_INDEXING_DATA {
+                        key_map_index: "poisitions".to_string(),
+                        key_index: "kline_1".to_string(),
+                    }),
+                },
+            ),
+        ]))
     }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_TRADE {
-    pub signal_hold: f64,
-    pub signal_short: f64,
-    pub signal_long: f64,
-    pub commission_market: f64,
-    pub commission_limit: f64,
     pub capital: f64,
-    pub percent_of_capital: f64,
-    pub amount_of_capital: f64,
-    pub max_entry: usize,
-    pub max_exit: usize,
-    pub market_mult_of_probability_qty: f64,
-    pub limit_mult_of_probability_qty: f64,
-    pub market_entry_orders_signals: Vec<String>,
-    pub market_exit_orders_signals: Vec<String>,
-    pub limit_entry_orders_signals: Vec<(String, String)>,
-    pub limit_exit_orders_signals: Vec<(String, String)>,
-    pub trigger_market_entry_orders_signals: Vec<(String, String)>,
-    pub trigger_market_exit_orders_signals: Vec<(String, String)>,
-    pub trigger_limit_entry_orders_signals: Vec<(String, String, String)>,
-    pub trigger_limit_exit_orders_signals: Vec<(String, String, String)>,
-    pub create_tp_sl_orders: SETTINGS_CREATE_TP_SL_ORDERS,
-    pub order_collectors: SETTINGS_ORDER_COLLECTORS,
-    pub stoploss: Vec<(f64, f64, f64)>,
-    pub takeprofit: Vec<(f64, f64, f64)>,
-    pub trigger_by: String,
+    pub symbols: Option<Vec<String>>,
     pub work_in_real_time: bool,
     pub category: String,
     pub account_type: String,
@@ -172,13 +330,7 @@ pub struct SETTINGS_TRADE {
     pub timeframe: String,
     pub leverage: f64,
     pub mode_trade: String,
-    pub hedge_mode: bool,
-    pub symbols_filters: Option<SETTINGS_SYMBOL_FILTERS>,
-    pub symbols_time_update_ms: usize,
-    pub symbols: Vec<String>,
-    pub symbols_black_list: Vec<String>,
-    pub coins: Vec<String>,
-    pub coins_black_list: Vec<String>,
+    pub mode_hedge: bool,
     pub slippage_tolerance_type: String,
     pub slippage_tolerance: (f64, f64),
     pub time_in_force: String,
@@ -187,34 +339,8 @@ pub struct SETTINGS_TRADE {
 impl Default for SETTINGS_TRADE {
     fn default() -> Self {
         Self {
-            signal_hold: 0.,
-            signal_short: -1.,
-            signal_long: 1.,
-            commission_market: 0.001,
-            commission_limit: 0.001,
             capital: 1000.,
-            percent_of_capital: 0.01,
-            amount_of_capital: 0.,
-            max_entry: usize::MAX,
-            max_exit: usize::MAX,
-            market_mult_of_probability_qty: 1.,
-            limit_mult_of_probability_qty: 1.,
-            market_entry_orders_signals: Default::default(),
-            market_exit_orders_signals: Default::default(),
-            limit_entry_orders_signals: Default::default(),
-            limit_exit_orders_signals: Default::default(),
-            trigger_market_entry_orders_signals: Default::default(),
-            trigger_market_exit_orders_signals: Default::default(),
-            trigger_limit_entry_orders_signals: Default::default(),
-            trigger_limit_exit_orders_signals: Default::default(),
-            create_tp_sl_orders: Default::default(),
-            order_collectors: vec![SETTINGS_ORDER_COLLECTOR {
-                key: "clear".to_string(),
-                ..Default::default()
-            }],
-            stoploss: Default::default(),
-            takeprofit: Default::default(),
-            trigger_by: "last".to_string(),
+            symbols: Default::default(),
             work_in_real_time: false,
             category: "linear".to_string(),
             account_type: "UNIFIED".to_string(),
@@ -222,47 +348,10 @@ impl Default for SETTINGS_TRADE {
             timeframe: "1".to_string(),
             leverage: 1.0,
             mode_trade: "isolated".to_string(),
-            hedge_mode: true,
-            symbols_filters: None,
-            symbols_time_update_ms: 60 * 60 * 24 * 1000,
-            symbols: Default::default(),
-            symbols_black_list: Default::default(),
-            coins: Default::default(),
-            coins_black_list: Default::default(),
+            mode_hedge: true,
             slippage_tolerance_type: Default::default(),
             slippage_tolerance: Default::default(),
             time_in_force: "GTC".to_string(),
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
-#[serde(default)]
-pub struct SETTINGS_FILES_DIR {
-    pub script_backtest: PathBuf,
-    pub script_stat: PathBuf,
-    pub backtest: PathBuf,
-    pub src: PathBuf,
-    pub train_model: PathBuf,
-}
-
-impl Default for SETTINGS_FILES_DIR {
-    fn default() -> Self {
-        Self {
-            script_backtest: Default::default(),
-            script_stat: Default::default(),
-            // /23_00_24_24_06_2026/report.html
-            // /23_00_24_24_06_2026/SUIUSDT/data.dat
-            // /23_00_24_24_06_2026/SUIUSDT/stat_values.dat
-            // /23_00_24_24_06_2026/SUIUSDT/stat_columns.dat
-            // /23_00_24_24_06_2026/SUIUSDT/script_data.plt
-            // /23_00_24_24_06_2026/SUIUSDT/script_stat.plt
-            // /23_00_24_24_06_2026/SUIUSDT/backtest.svg
-            // /23_00_24_24_06_2026/SUIUSDT/capital.svg
-            // /23_00_24_24_06_2026/SUIUSDT/stat.svg
-            backtest: "target/bc_constructor/backtests".into(),
-            src: "target/bc_constructor/data".into(),
-            train_model: "target/bc_constructor/train_models".into(),
         }
     }
 }
@@ -274,15 +363,104 @@ pub struct SETTINGS_MSG {
     pub chat: String,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[serde(default, transparent)]
+pub struct SETTINGS_VISUAL_SCRIPT_BACKTEST(String);
+
+impl Default for SETTINGS_VISUAL_SCRIPT_BACKTEST {
+    fn default() -> Self {
+        Self(
+            r##"\
+            set datafile separator whitespace
+            set datafile columnheaders
+            set style fill solid
+            set boxwidth 0.8
+            set style textbox opaque fillcolor rgb "#EBEBEB" bordercolor rgb "#0F0F0F"
+            plot \
+            "data.dat" index 0 using "time":"open":"high":"low":"close" with candlesticks linecolor rgb "#7D2AD4" title "symbol", \
+            "data.dat" index 1 using "time":"positions_entry_exit" with lines linewidth 2 dashtype (40,10) linecolor rgb "#C2820C" title "positions_entry_exit", \
+            "data.dat" index 0 using "time":"entry" with points pointtype 7 pointsize 3 linecolor rgb "#0F0F0F" notitle, \
+            "data.dat" index 0 using "time":"exit" with points lw 8 pointtype 2 pointsize 2 linecolor rgb "#0F0F0F" notitle, \
+            "data.dat" index 0 using "time":"entry" with points pointtype 7 pointsize 2.5 linecolor rgb "#FFFFFF" notitle, \
+            "data.dat" index 0 using "time":"exit" with points lw 6 pointtype 2 pointsize 2 linecolor rgb "#FFFFFF" notitle, \
+            "data.dat" index 0 using "time":"entry" with points pointtype 7 pointsize 2 linecolor rgb "#00C222" title "entry", \
+            "data.dat" index 0 using "time":"exit" with points lw 3 pointtype 2 pointsize 2 linecolor rgb "#C20006" title "exit", \
+            "data.dat" index 0 using "time":(column("pnl") != column("pnl") ? NaN : column("open")):"pnl" with labels boxed offset 0,1 title "pnl", \
+            "data.dat" index 0 using "time":(column("qty") != column("qty") ? NaN : column("open")):"pnl" with labels boxed offset 0,2 title "qty"\
+            "##.to_string())
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_OTHER {
+    pub reboot_ms: Option<usize>,
+}
+
+impl Default for SETTINGS_OTHER {
+    fn default() -> Self {
+        Self {
+            reboot_ms: Some(60 * 60 * 24 * 1000),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_DATA_GEN {
+    pub fullness_init: String,
+    pub fullness_step: String,
+    pub fullness_execute: String,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_GLOBAL {
+    pub exch: SETTINGS_EXCH,
+    pub files_dir: SETTINGS_FILES_DIR,
+    pub trade: SETTINGS_TRADE,
+    pub data_gen: Option<SETTINGS_DATA_GEN>,
+    pub other: SETTINGS_OTHER,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_PIPELINE_PRE {
+    pub symbols_filters_pre_gen: SETTINGS_SYMBOL_FILTERS_PRE_GEN,
+    pub symbols_filters_post_gen: SETTINGS_SYMBOL_FILTERS_POST_GEN,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_PIPELINE {
+    pub indications: SETTINGS_INDS,
+    pub signals_train: SETTINGS_SIGNALS,
+    pub signals: SETTINGS_SIGNALS,
+    pub utils_state: SETTINGS_UTILS_STATE,
+    pub order_creators: SETTINGS_ORDER_CREATORS,
+    pub order_filters: SETTINGS_ORDER_FILTERS,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+pub struct SETTINGS_PIPELINE_EXECUTE {
+    pub order_collectors: SETTINGS_ORDER_COLLECTORS,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
+#[serde(default)]
+// must use
+pub struct SETTINGS_PIPELINE_POST {
+    pub visual_ind_columns: SETTINGS_INDS,
+    pub visual_ind_values: SETTINGS_INDS,
+}
+
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS {
-    pub exch: SETTINGS_EXCH,
-    pub indications: SETTINGS_INDS,
-    pub signals_train: SETTINGS_SIGNALS,
-    pub signals_ready: SETTINGS_SIGNALS,
-    pub trade: SETTINGS_TRADE,
-    pub files_dir: SETTINGS_FILES_DIR,
-    pub indications_stat_values: SETTINGS_INDS,
-    pub indications_stat_columns: SETTINGS_INDS,
+    pub global: SETTINGS_GLOBAL,
+    pub pipeline_pre: SETTINGS_PIPELINE_PRE,
+    pub pipeline: SETTINGS_PIPELINE,
+    pub pipeline_execute: SETTINGS_PIPELINE_EXECUTE,
+    pub pipeline_post: SETTINGS_PIPELINE_POST,
 }

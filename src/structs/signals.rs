@@ -5,11 +5,11 @@ pub struct Signal {
 }
 
 impl Signal {
-    pub fn new(
-        signal: f64,
-        probability: f64,
-    ) -> Self {
-        Self { signal, probability }
+    pub fn new(signal: f64, probability: f64) -> Self {
+        Self {
+            signal,
+            probability,
+        }
     }
 }
 

@@ -7,7 +7,7 @@ use rustc_hash::{FxHashMap, FxHasher};
 pub type MAP<K, V> = FxHashMap<K, V>;
 pub type MAP_LINK<K, V> = IndexMap<K, V, BuildHasherDefault<FxHasher>>;
 
-pub type FUNCS_EXTRACT_ARGS_TYPE<S, T> = MAP<&'static str, fn(&S) -> T>;
+pub type PACK<S, T> = MAP<&'static str, fn(&S) -> T>;
 
 pub trait MapTrait<'a, K, V>
 where

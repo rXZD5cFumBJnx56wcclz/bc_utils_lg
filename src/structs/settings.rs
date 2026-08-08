@@ -1,40 +1,63 @@
 #![allow(non_camel_case_types)]
 
+use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
+use serde_with::{DurationMilliSeconds, DurationSeconds, serde_as};
 
 use std::fs::File;
 use std::io::BufReader;
+use std::time::Duration;
 use std::{error::Error, path::PathBuf};
 
 use serde_json5::from_reader;
 
 use crate::types::maps::{MAP, MAP_LINK};
 
-pub fn settings_from_json(dir: PathBuf) -> Result<SETTINGS, Box<dyn Error>> {
+pub fn from_json<T: DeserializeOwned>(dir: PathBuf) -> Result<T, Box<dyn Error>> {
     let mut reader = BufReader::new(File::open(dir)?);
     from_reader(&mut reader).map_err(|e| Box::new(e) as Box<dyn Error>)
 }
 
+#[serde_as]
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_EXCH {
     pub url: String,
+    pub wws_host: String,
+    pub wws_url: String,
     pub key: String,
     pub secret: String,
     pub exchange: String,
-    pub timeout_req_ms: usize,
-    pub timeout_cycle_ms: usize,
+    pub account_type: String,
+    #[serde_as(as = "DurationSeconds<u64>")]
+    pub timeframe_sec: Duration,
+    pub category: String,
+    #[serde_as(as = "DurationMilliSeconds<u64>")]
+    pub timeout_req_ms: Duration,
+    #[serde_as(as = "DurationMilliSeconds<u64>")]
+    pub timeout_cycle_ms: Duration,
+    #[serde_as(as = "DurationMilliSeconds<u64>")]
+    pub ping_ms: Duration,
+    #[serde_as(as = "DurationMilliSeconds<u64>")]
+    pub timeout_socket_ms: Duration,
 }
 
 impl Default for SETTINGS_EXCH {
     fn default() -> Self {
         Self {
             url: Default::default(),
+            wws_host: Default::default(),
+            wws_url: Default::default(),
             key: Default::default(),
             secret: Default::default(),
             exchange: Default::default(),
-            timeout_req_ms: 5000,
-            timeout_cycle_ms: 7000,
+            account_type: "UNIFIED".to_string(),
+            timeframe_sec: Duration::from_mins(1),
+            category: "linear".to_string(),
+            timeout_req_ms: Duration::from_secs(5),
+            timeout_cycle_ms: Duration::from_secs(7),
+            ping_ms: Duration::from_secs(10),
+            timeout_socket_ms: Duration::from_secs(1),
         }
     }
 }
@@ -324,10 +347,7 @@ pub struct SETTINGS_TRADE {
     pub capital: f64,
     pub symbols: Option<Vec<String>>,
     pub work_in_real_time: bool,
-    pub category: String,
-    pub account_type: String,
     pub klines_qty: usize,
-    pub timeframe: String,
     pub leverage: f64,
     pub mode_trade: String,
     pub mode_hedge: bool,
@@ -342,10 +362,7 @@ impl Default for SETTINGS_TRADE {
             capital: 1000.,
             symbols: Default::default(),
             work_in_real_time: false,
-            category: "linear".to_string(),
-            account_type: "UNIFIED".to_string(),
             klines_qty: Default::default(),
-            timeframe: "1".to_string(),
             leverage: 1.0,
             mode_trade: "isolated".to_string(),
             mode_hedge: true,
@@ -394,13 +411,13 @@ impl Default for SETTINGS_VISUAL_SCRIPT_BACKTEST {
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_OTHER {
-    pub reboot_ms: Option<usize>,
+    pub reboot_ms: Option<Duration>,
 }
 
 impl Default for SETTINGS_OTHER {
     fn default() -> Self {
         Self {
-            reboot_ms: Some(60 * 60 * 24 * 1000),
+            reboot_ms: Some(Duration::from_hours(24)),
         }
     }
 }

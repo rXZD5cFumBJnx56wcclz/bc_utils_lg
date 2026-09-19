@@ -1,6 +1,6 @@
 [package]
 name = "bc_utils_lg"
-version = "0.1.61"
+version = "0.2.0"
 edition = "2024"
 
 [dependencies]
@@ -10,3 +10,6 @@ serde_with = "3"
 rustc-hash = "1.1"
 num-traits = "^0.2.19"
 indexmap = {version = "2.0", features=["serde"]}
+
+[features]
+test_state = []

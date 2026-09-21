@@ -133,23 +133,11 @@ pub struct SETTINGS_IND {
     pub used_ind: Vec<String>,
     pub procedure_used: Vec<usize>,
     // pipeline post only
-    pub used_src_aggr: Vec<SETTINGS_USED_STRING>,
+    pub used_database: Vec<SETTINGS_USED_STRING>,
     pub used_ind_col: Vec<SETTINGS_USED_STRING>,
     pub used_ind_val: Vec<String>,
 }
 pub type SETTINGS_INDS = MAP_LINK<String, SETTINGS_IND>;
-
-#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
-#[serde(default)]
-// stat -> src -> used_src in settings ind
-pub struct SETTINGS_IND_STAT {
-    pub s: SETTINGS_IND,
-    pub used_stat: Vec<String>,
-    pub used_column: Vec<String>,
-    pub used_value: Vec<String>,
-}
-
-pub type SETTINGS_INDS_STAT = MAP_LINK<String, SETTINGS_IND_STAT>;
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]

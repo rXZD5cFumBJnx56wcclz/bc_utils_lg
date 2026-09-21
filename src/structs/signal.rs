@@ -1,6 +1,8 @@
 use std::fmt::Display;
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, PartialEq, Clone, Copy, Deserialize, Serialize)]
 pub struct Signal {
     pub signal: f64,
     pub probability: f64,

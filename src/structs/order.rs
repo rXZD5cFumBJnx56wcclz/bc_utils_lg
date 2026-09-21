@@ -1,4 +1,6 @@
-#[derive(Debug, Clone, PartialEq)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct Order {
     pub symbol: String,
     pub side: String,
@@ -65,14 +67,14 @@ impl Order {
     }
 }
 
-#[derive(Debug, Clone, Default, PartialEq)]
+#[derive(Debug, Clone, Default, PartialEq, Deserialize, Serialize)]
 pub struct Trigger {
     pub price: f64,
     pub trigger_by: String,
     pub direction: usize,
 }
 
-#[derive(Debug, Clone, Default, PartialEq)]
+#[derive(Debug, Clone, Default, PartialEq, Deserialize, Serialize)]
 pub struct OrderWrap {
     pub order: Order,
     pub is_trigger: bool,

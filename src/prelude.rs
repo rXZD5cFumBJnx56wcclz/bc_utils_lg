@@ -9,4 +9,5 @@ pub use crate::structs::position::*;
 pub use crate::structs::settings::*;
 pub use crate::structs::signal::*;
 pub use crate::structs::trade_state::*;
+pub use crate::traits::w::*;
 pub use crate::types::maps::*;

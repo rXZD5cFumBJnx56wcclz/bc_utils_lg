@@ -309,6 +309,7 @@ impl Default for SETTINGS_OTHER {
 pub struct SETTINGS_DATA_GEN {
     pub fullness_init: String,
     pub fullness_step: String,
+    pub use_trade_state: bool,
     pub fullness_execute: String,
 }
 

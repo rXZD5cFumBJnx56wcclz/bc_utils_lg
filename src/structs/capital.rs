@@ -50,3 +50,9 @@ impl AddAssign<f64> for Capital {
         self.0 += rhs;
     }
 }
+
+impl Into<Capital> for f64 {
+    fn into(self) -> Capital {
+        Capital(self)
+    }
+}

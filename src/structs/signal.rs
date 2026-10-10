@@ -10,7 +10,10 @@ pub struct Signal {
 
 impl Display for Signal {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "signal: {}, prob: {}", self.signal, self.probability)
+        f.debug_struct("Signal")
+            .field("signal", &self.signal)
+            .field("prob", &self.probability)
+            .finish()
     }
 }
 

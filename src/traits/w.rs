@@ -1,4 +1,4 @@
-use crate::{structs::settings::SETTINGS_USED_USIZE, types::maps::MAP_LINK};
+use crate::prelude::*;
 
 pub trait W {
     fn w(&self) -> usize;

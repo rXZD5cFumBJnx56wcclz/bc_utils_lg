@@ -12,15 +12,13 @@ pub static SIGNALS: LazyLock<SETTINGS_SIGNALS> = LazyLock::new(|| {
             "th_1".to_string(),
             SETTINGS_SIGNAL {
                 key: "th".to_string(),
-                kwargs_usize: MAP::from_iter([
-                    ("index_min".to_string(), 0),
-                    ("index_max".to_string(), 0),
-                    ("index_normal".to_string(), 0),
-                ]),
-                kwargs_f64: MAP::from_iter([
-                    ("th_min".to_string(), 0.0001),
-                    ("th_max".to_string(), 0.0001),
-                    ("limit".to_string(), 1.),
+                kwargs: MAP::from_iter([
+                    ("index_min".to_string(), from_u128_number(0).unwrap()),
+                    ("index_max".to_string(), from_u128_number(0).unwrap()),
+                    ("index_normal".to_string(), from_u128_number(0).unwrap()),
+                    ("th_min".to_string(),from_f64_number( 0.0001).unwrap()),
+                    ("th_max".to_string(),from_f64_number( 0.0001).unwrap()),
+                    ("limit".to_string(),from_f64_number( 1.).unwrap()),
                 ]),
                 used_src: vec![
                     SETTINGS_USED_USIZE {
@@ -50,9 +48,9 @@ pub static SIGNALS: LazyLock<SETTINGS_SIGNALS> = LazyLock::new(|| {
             "signal".to_string(),
             SETTINGS_SIGNAL {
                 key: "repeat".to_string(),
-                kwargs_f64: MAP::from_iter([
-                    ("value_signal".to_string(), 1.),
-                    ("value_probability".to_string(), 1.),
+                kwargs: MAP::from_iter([
+                    ("value_signal".to_string(), from_f64_number(1.).unwrap()),
+                    ("value_probability".to_string(), from_f64_number(1.).unwrap()),
                 ]),
                 ..Default::default()
             },

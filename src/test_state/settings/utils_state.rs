@@ -8,9 +8,9 @@ pub static UTILS_STATE: LazyLock<SETTINGS_UTILS_STATE> = LazyLock::new(|| {
             "qty_1".to_string(),
             SETTINGS_UTIL_STATE {
                 key: "qty".to_string(),
-                kwargs_f64: MAP::from_iter([
-                    ("amount_usd".to_string(), 1.),
-                    ("percent_of_capital".to_string(), 0.1),
+                kwargs: MAP::from_iter([
+                    ("amount_usd".to_string(), from_f64_number(1.).unwrap()),
+                    ("percent_of_capital".to_string(), from_f64_number(0.1).unwrap()),
                 ]),
                 ..Default::default()
             },
@@ -19,7 +19,7 @@ pub static UTILS_STATE: LazyLock<SETTINGS_UTILS_STATE> = LazyLock::new(|| {
             "direction_1".to_string(),
             SETTINGS_UTIL_STATE {
                 key: "direction".to_string(),
-                kwargs_f64: MAP::from_iter([("direction".to_string(), 1.)]),
+                kwargs: MAP::from_iter([("direction".to_string(), from_f64_number(1.).unwrap())]),
                 ..Default::default()
             },
         ),

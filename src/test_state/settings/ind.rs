@@ -11,7 +11,7 @@ pub static INDICATIONS: LazyLock<SETTINGS_INDS> = LazyLock::new(|| {
             "rma_1".to_string(),
             SETTINGS_IND {
                 key: "rma".to_string(),
-                kwargs_usize: MAP::from_iter([("window".to_string(), 2)]),
+                kwargs: MAP::from_iter([("window".to_string(), from_u128_number(2).unwrap())]),
                 used_src: vec![SETTINGS_USED_USIZE {
                     index: 4,
                     sub_from_last_i: 1,
@@ -23,7 +23,7 @@ pub static INDICATIONS: LazyLock<SETTINGS_INDS> = LazyLock::new(|| {
             "sma_1".to_string(),
             SETTINGS_IND {
                 key: "sma".to_string(),
-                kwargs_usize: MAP::from_iter([("window".to_string(), 3)]),
+                kwargs: MAP::from_iter([("window".to_string(), from_u128_number(3).unwrap())]),
                 used_src: vec![
                     // fake
                     SETTINGS_USED_USIZE {
@@ -44,7 +44,7 @@ pub static INDICATIONS_RSI: LazyLock<SETTINGS_INDS> = LazyLock::new(|| {
         "rsi_1".to_string(),
         SETTINGS_IND {
             key: "rsi".to_string(),
-            kwargs_usize: MAP::from_iter([("window".to_string(), 2)]),
+            kwargs: MAP::from_iter([("window".to_string(), from_u128_number(2).unwrap())]),
             used_src: vec![SETTINGS_USED_USIZE {
                 index: 1,
                 ..Default::default()

@@ -2,7 +2,7 @@ use crate::prelude::*;
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_TRIGGER_OUT_OF_STORAGE {
+pub struct SettingsTriggerOutOfStorage {
     pub used_ind: String,
     pub trigger_by: String,
     // trigger direction
@@ -11,7 +11,7 @@ pub struct SETTINGS_TRIGGER_OUT_OF_STORAGE {
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_ORDER_CREATOR {
+pub struct SettingsOrderCreator {
     // market/limit
     pub type_: String,
     // side
@@ -24,12 +24,12 @@ pub struct SETTINGS_ORDER_CREATOR {
     // if order is trigger
     pub include_in_storage: bool,
     // if order is trigger
-    pub trigger: Option<SETTINGS_TRIGGER_OUT_OF_STORAGE>,
+    pub trigger: Option<SettingsTriggerOutOfStorage>,
     pub type_price_cross: String,
     pub leverage: f64,
 }
 
-impl Default for SETTINGS_ORDER_CREATOR {
+impl Default for SettingsOrderCreator {
     fn default() -> Self {
         Self {
             type_: Default::default(),
@@ -45,4 +45,4 @@ impl Default for SETTINGS_ORDER_CREATOR {
     }
 }
 
-pub type SETTINGS_ORDER_CREATORS = MAP<String, SETTINGS_ORDER_CREATOR>;
+pub type SettingsOrderCreators = MAP<String, SettingsOrderCreator>;

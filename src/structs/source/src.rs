@@ -1,16 +1,13 @@
 use std::slice::SliceIndex;
 
 use nautilus_model::{
-    data::{
-        Bar, IndexPriceUpdate, MarkPriceUpdate,
-        OrderBookDepth, QuoteTick, TradeTick,
-    },
+    data::{Bar, IndexPriceUpdate, MarkPriceUpdate, OrderBookDepth, QuoteTick, TradeTick},
     identifiers::InstrumentId,
 };
 
 use crate::{
     prelude::*,
-    structs::src::serialization::{
+    structs::source::serialization::{
         bar_serialization, depth_serizlization, index_price_serialization, mark_price_serialization,
     },
 };
@@ -69,7 +66,7 @@ impl<'a> Src<'a> {
         R: SliceIndex<[f64], Output = [f64]>,
         R: Clone,
     {
-        src.into_iter()
+        src.iter()
             .map(|v| Self::to_vec(v)[rng.clone()].to_vec())
             .collect()
     }

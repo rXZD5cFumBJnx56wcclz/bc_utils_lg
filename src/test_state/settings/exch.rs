@@ -1,6 +1,7 @@
 use crate::test_state::prelude::*;
 
-pub static EXCH: LazyLock<SETTINGS_EXCH> = LazyLock::new(|| SETTINGS_EXCH {
+#[allow(clippy::needless_update)]
+pub static EXCH: LazyLock<SettingsExch> = LazyLock::new(|| SettingsExch {
     url: "https://api-testnet.bybit.com".to_string(),
     wws_host: "stream-testnet.bybit.com".to_string(),
     wws_url: "wss://stream-testnet.bybit.com".to_string(),

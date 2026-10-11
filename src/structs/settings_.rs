@@ -30,9 +30,9 @@ pub struct SETTINGS_SYMBOLS {
 pub struct SETTINGS_SYMBOL_FILTER {
     pub key: String,
     pub kwargs: MAP<String, serde_json::Value>,
-    pub used_src: Vec<SETTINGS_USED_USIZE>,
-    pub used_ind: Vec<SETTINGS_USED_STRING>,
-    pub used_ind_columns: Vec<SETTINGS_USED_STRING>,
+    pub used_src: Vec<SettingsUsedUsize>,
+    pub used_ind: Vec<SettingsUsedString>,
+    pub used_ind_columns: Vec<SettingsUsedString>,
     pub used_ind_values: Vec<String>,
     pub procedure_used_src: Vec<usize>,
 }
@@ -70,9 +70,9 @@ pub struct SETTINGS_DATA_GEN {
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_GLOBAL {
-    pub exch: SETTINGS_EXCH,
+    pub exch: SettingsExch,
     pub files_dir: SETTINGS_FILES_DIR,
-    pub trade: SETTINGS_TRADE,
+    pub trade: SettingsTrade,
     pub data_gen: Option<SETTINGS_DATA_GEN>,
     pub other: SETTINGS_OTHER,
 }
@@ -87,20 +87,20 @@ pub struct SETTINGS_SYMBOLS_ALL {
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_PIPELINE {
-    pub indications: SETTINGS_INDS,
-    pub signals_train: SETTINGS_SIGNALS,
-    pub signals: SETTINGS_SIGNALS,
-    pub utils_state: SETTINGS_UTILS_STATE,
-    pub order_creators: SETTINGS_ORDER_CREATORS,
-    pub order_filters: SETTINGS_ORDER_FILTERS,
-    pub order_collectors: SETTINGS_ORDER_COLLECTORS,
+    pub indications: SettingsInds,
+    pub signals_train: SettingsSignals,
+    pub signals: SettingsSignals,
+    pub utils_state: SettingsUtilsStates,
+    pub order_creators: SettingsOrderCreators,
+    pub order_filters: SettingsOrderFilters,
+    pub order_collectors: SettingsOrderCollectors,
 }
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
 pub struct SETTINGS_PIPELINE_POST {
-    pub indications_columns: SETTINGS_INDS,
-    pub indications_values: SETTINGS_INDS,
+    pub indications_columns: SettingsInds,
+    pub indications_values: SettingsInds,
 }
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]

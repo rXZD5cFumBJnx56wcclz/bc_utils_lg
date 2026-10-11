@@ -4,23 +4,23 @@ repo = "local"
 [[repos.hooks]]
 id = "fix"
 name = "cargo fix"
-entry = "./scripts/wrap_hook.sh fix cargo fix --all-targets"
+entry = "./scripts/wrap_hook.sh fix cargo fix --all-targets -- -W non-camel-case-types"
 language = "system"
 pass_filenames = false
 always_run = true
 
-# [[repos.hooks]]
-# id = "clippy"
-# name = "cargo clippy"
-# entry = "./scripts/wrap_hook.sh clippy cargo clippy --all-targets -- -D warnings"
-# language = "system"
-# pass_filenames = false
-# always_run = true
+[[repos.hooks]]
+id = "clippy"
+name = "cargo clippy"
+entry = "./scripts/wrap_hook.sh clippy cargo clippy --all-targets -- -D warnings"
+language = "system"
+pass_filenames = false
+always_run = true
 
 [[repos.hooks]]
 id = "fmt"
 name = "cargo fmt"
-entry = "./scripts/wrap_hook.sh fmt cargo fmt --all -- --check"
+entry = "./scripts/wrap_hook.sh fmt cargo fmt"
 language = "system"
 pass_filenames = false
 always_run = true

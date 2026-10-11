@@ -6,26 +6,26 @@ use crate::test_state::prelude::*;
 // - ind usage
 // - signals_train usage
 // - procedure_used
-pub static SIGNALS: LazyLock<SETTINGS_SIGNALS> = LazyLock::new(|| {
-    SETTINGS_SIGNALS::from_iter([
+pub static SIGNALS: LazyLock<SettingsSignals> = LazyLock::new(|| {
+    SettingsSignals::from_iter([
         (
             "th_1".to_string(),
-            SETTINGS_SIGNAL {
+            SettingsSignal {
                 key: "th".to_string(),
                 kwargs: MAP::from_iter([
                     ("index_min".to_string(), from_u128_number(0).unwrap()),
                     ("index_max".to_string(), from_u128_number(0).unwrap()),
                     ("index_normal".to_string(), from_u128_number(0).unwrap()),
-                    ("th_min".to_string(),from_f64_number( 0.0001).unwrap()),
-                    ("th_max".to_string(),from_f64_number( 0.0001).unwrap()),
-                    ("limit".to_string(),from_f64_number( 1.).unwrap()),
+                    ("th_min".to_string(), from_f64_number(0.0001).unwrap()),
+                    ("th_max".to_string(), from_f64_number(0.0001).unwrap()),
+                    ("limit".to_string(), from_f64_number(1.).unwrap()),
                 ]),
                 used_src: vec![
-                    SETTINGS_USED_USIZE {
+                    SettingsUsedUsize {
                         index: 0,
                         sub_from_last_i: 1,
                     },
-                    SETTINGS_USED_USIZE {
+                    SettingsUsedUsize {
                         index: 1,
                         sub_from_last_i: 1,
                     },
@@ -38,7 +38,7 @@ pub static SIGNALS: LazyLock<SETTINGS_SIGNALS> = LazyLock::new(|| {
         ),
         (
             "invert_1".to_string(),
-            SETTINGS_SIGNAL {
+            SettingsSignal {
                 key: "invert".to_string(),
                 used_signals: vec!["th_1".to_string()],
                 ..Default::default()
@@ -46,11 +46,14 @@ pub static SIGNALS: LazyLock<SETTINGS_SIGNALS> = LazyLock::new(|| {
         ),
         (
             "signal".to_string(),
-            SETTINGS_SIGNAL {
+            SettingsSignal {
                 key: "repeat".to_string(),
                 kwargs: MAP::from_iter([
                     ("value_signal".to_string(), from_f64_number(1.).unwrap()),
-                    ("value_probability".to_string(), from_f64_number(1.).unwrap()),
+                    (
+                        "value_probability".to_string(),
+                        from_f64_number(1.).unwrap(),
+                    ),
                 ]),
                 ..Default::default()
             },

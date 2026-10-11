@@ -4,3 +4,4 @@ Cargo.lock
 *.log
 log_scripts/
 *.DS_Store
+*.git

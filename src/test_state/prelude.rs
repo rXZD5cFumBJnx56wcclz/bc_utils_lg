@@ -26,9 +26,13 @@ pub use crate::test_state::settings::trade::*;
 pub use crate::test_state::settings::utils_state::*;
 
 pub fn from_u128_number(n: u128) -> ResultAH<Value> {
-    Ok(Value::Number(Number::from_u128(n).ok_or(anyhow::anyhow!("from u128 err"))?))
+    Ok(Value::Number(
+        Number::from_u128(n).ok_or(anyhow::anyhow!("from u128 err"))?,
+    ))
 }
 
 pub fn from_f64_number(n: f64) -> ResultAH<Value> {
-    Ok(Value::Number(Number::from_f64(n).ok_or(anyhow::anyhow!("from f64 err"))?))
+    Ok(Value::Number(
+        Number::from_f64(n).ok_or(anyhow::anyhow!("from f64 err"))?,
+    ))
 }

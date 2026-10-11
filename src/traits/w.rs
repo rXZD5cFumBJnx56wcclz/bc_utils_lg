@@ -4,7 +4,7 @@ pub trait W {
     fn w(&self) -> usize;
 }
 
-pub fn w_src(used_src: &[SETTINGS_USED_USIZE]) -> usize {
+pub fn w_src(used_src: &[SettingsUsedUsize]) -> usize {
     used_src
         .iter()
         .map(|s_src| s_src.sub_from_last_i)
@@ -33,7 +33,7 @@ where
             .map(|(k, ind)| (*k, init_func(ind)))
             .collect::<MAP_LINK<&str, usize>>(),
         |init, (k, v)| {
-            let res = iter_func(v, &init, k).into_iter().sum();
+            let res = iter_func(v, init, k).into_iter().sum();
             init[k.as_str()] = res;
             Some((k.as_str(), res))
         },

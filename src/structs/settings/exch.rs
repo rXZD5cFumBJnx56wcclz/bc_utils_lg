@@ -3,7 +3,7 @@ use crate::prelude::*;
 #[serde_as]
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_EXCH {
+pub struct SettingsExch {
     pub url: String,
     pub wws_host: String,
     pub wws_url: String,
@@ -22,7 +22,7 @@ pub struct SETTINGS_EXCH {
     pub timeout_socket_ms: Duration,
 }
 
-impl Default for SETTINGS_EXCH {
+impl Default for SettingsExch {
     fn default() -> Self {
         Self {
             url: Default::default(),

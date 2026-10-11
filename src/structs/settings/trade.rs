@@ -2,7 +2,7 @@ use crate::prelude::*;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_TRADE {
+pub struct SettingsTrade {
     pub capital: f64,
     pub work_in_real_time: bool,
     pub klines_qty: usize,
@@ -19,7 +19,7 @@ pub struct SETTINGS_TRADE {
     pub signal_short: f64,
 }
 
-impl Default for SETTINGS_TRADE {
+impl Default for SettingsTrade {
     fn default() -> Self {
         Self {
             capital: 1000.,

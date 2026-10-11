@@ -6,11 +6,11 @@ use crate::test_state::prelude::*;
 // - trigger
 // signal used
 // utils state used
-pub static ORDER_CREATORS: LazyLock<SETTINGS_ORDER_CREATORS> = LazyLock::new(|| {
-    SETTINGS_ORDER_CREATORS::from_iter([
+pub static ORDER_CREATORS: LazyLock<SettingsOrderCreators> = LazyLock::new(|| {
+    SettingsOrderCreators::from_iter([
         (
             "open_order".to_string(),
-            SETTINGS_ORDER_CREATOR {
+            SettingsOrderCreator {
                 type_: "market".to_string(),
                 used_signal: "th_1".to_string(),
                 used_util_state: "qty_1".to_string(),
@@ -20,7 +20,7 @@ pub static ORDER_CREATORS: LazyLock<SETTINGS_ORDER_CREATORS> = LazyLock::new(|| 
         ),
         (
             "avg_order".to_string(),
-            SETTINGS_ORDER_CREATOR {
+            SettingsOrderCreator {
                 type_: "limit".to_string(),
                 used_signal: "th_1".to_string(),
                 used_util_state: "qty_1".to_string(),
@@ -31,13 +31,13 @@ pub static ORDER_CREATORS: LazyLock<SETTINGS_ORDER_CREATORS> = LazyLock::new(|| 
         ),
         (
             "sl".to_string(),
-            SETTINGS_ORDER_CREATOR {
+            SettingsOrderCreator {
                 type_: "market".to_string(),
                 used_signal: "th_1".to_string(),
                 include_in_storage: true,
                 used_util_state: "qty_1".to_string(),
                 leverage: 10.,
-                trigger: Some(SETTINGS_TRIGGER_OUT_OF_STORAGE {
+                trigger: Some(SettingsTriggerOutOfStorage {
                     used_ind: "rma_1".to_string(),
                     trigger_by: "last".to_string(),
                     used_util_state: "direction_1".to_string(),
@@ -48,7 +48,7 @@ pub static ORDER_CREATORS: LazyLock<SETTINGS_ORDER_CREATORS> = LazyLock::new(|| 
         ),
         (
             "order".to_string(),
-            SETTINGS_ORDER_CREATOR {
+            SettingsOrderCreator {
                 type_: "market".to_string(),
                 used_signal: "signal".to_string(),
                 used_util_state: "qty_1".to_string(),

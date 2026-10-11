@@ -1,1 +1,1 @@
-pub struct UnixTs (pub u128);
+pub struct UnixTs(pub u128);

@@ -8,10 +8,10 @@ use crate::test_state::prelude::*;
 // without verification
 // - signals_train usage
 // - procedure_used
-pub static SIGNALS_TRAIN: LazyLock<SETTINGS_SIGNALS> = LazyLock::new(|| {
-    SETTINGS_SIGNALS::from_iter([(
+pub static SIGNALS_TRAIN: LazyLock<SettingsSignals> = LazyLock::new(|| {
+    SettingsSignals::from_iter([(
         "mm_1".to_string(),
-        SETTINGS_SIGNAL {
+        SettingsSignal {
             key: "mm".to_string(),
             kwargs: MAP::from_iter([
                 ("index_min".to_string(), from_u128_number(0).unwrap()),
@@ -21,7 +21,7 @@ pub static SIGNALS_TRAIN: LazyLock<SETTINGS_SIGNALS> = LazyLock::new(|| {
                 ("tp_th".to_string(), from_f64_number(0.0001).unwrap()),
                 ("tp_limit".to_string(), from_f64_number(0.01).unwrap()),
             ]),
-            used_src: vec![SETTINGS_USED_USIZE {
+            used_src: vec![SettingsUsedUsize {
                 index: 1,
                 sub_from_last_i: 1,
             }],

@@ -2,7 +2,7 @@ use crate::test_state::prelude::*;
 
 // fix
 // slippage
-pub static TRADE: LazyLock<SETTINGS_TRADE> = LazyLock::new(|| SETTINGS_TRADE {
+pub static TRADE: LazyLock<SettingsTrade> = LazyLock::new(|| SettingsTrade {
     capital: 1000.,
     work_in_real_time: true,
     klines_qty: 10_000,

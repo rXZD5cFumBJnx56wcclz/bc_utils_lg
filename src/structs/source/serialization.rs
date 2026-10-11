@@ -1,7 +1,4 @@
-use nautilus_model::data::{
-        Bar, IndexPriceUpdate, MarkPriceUpdate,
-        OrderBookDepth,
-    };
+use nautilus_model::data::{Bar, IndexPriceUpdate, MarkPriceUpdate, OrderBookDepth};
 use std::collections::BTreeSet;
 
 pub fn bar_serialization(bar: &Bar) -> Vec<f64> {

@@ -1,8 +1,8 @@
 #![allow(non_camel_case_types)]
 
-pub use std::{error::Error, path::PathBuf};
 pub use std::fs::File;
 pub use std::io::BufReader;
+pub use std::{error::Error, path::PathBuf};
 
 use serde::de::DeserializeOwned;
 
@@ -15,23 +15,23 @@ pub fn from_json<T: DeserializeOwned>(dir: PathBuf) -> Result<T, Box<dyn Error>>
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_USED_USIZE {
+pub struct SettingsUsedUsize {
     pub index: usize,
     pub sub_from_last_i: usize,
 }
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_USED_STRING {
+pub struct SettingsUsedString {
     pub key: String,
     pub sub_from_last_i: usize,
 }
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq)]
 #[serde(default)]
-pub struct SETTINGS_GW {
+pub struct SettingsGw {
     pub key: String,
     pub kwargs: MAP<String, serde_json::Value>,
 }
 
-pub type SETTINGS_GW_MAP = MAP<String, SETTINGS_GW>;
+pub type SettingsGwMap = MAP<String, SettingsGw>;
